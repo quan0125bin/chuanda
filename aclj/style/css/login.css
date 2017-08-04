@@ -1,0 +1,39 @@
+body{background:#000 url(http://chiduxx.gotoip2.com/cdhandle/images/bg/2.jpg) no-repeat center top}
+.login{margin:0 auto;width:500px;margin-top:12%;color:#5f5f5f;transition:All 0.4s ease-in-out;-webkit-transition:All 0.4s ease-in-out;-moz-transition:All 0.4s ease-in-out;-o-transition:All 0.4s ease-in-out;}
+/*
+.login.sure{transform:scale(0.0);-webkit-transform:scale(0.0);-moz-transform:scale(0.0);-o-transform:scale(0.0);-ms-transform:scale(0.0);}
+.login.load{transform:scale(0.5);-webkit-transform:scale(0.5);-moz-transform:scale(0.5);-o-transform:scale(0.5);-ms-transform:scale(0.5);}
+*/
+.login .span{display:inline-block;margin-right:10px;}
+.login .title{text-align:center;color:#fff;font-size:30px;font-size:var(--f30);line-height:initial;margin:10px 0;}
+.login .box{background:rgba(255, 255, 255, 0.7);padding:20px;padding:var(--f20);border-radius:5px;border:1px solid #f3f3f3;}
+/**
+.login .inp{position:relative;margin:20px 0;margin:var(--f20) 0;}
+.login .inp input{background:rgba(255, 255, 255, 0.7);width:96%;padding:0 2%;background:none;}
+.login .inp .tit{background:rgba(255, 255, 255, 0.7);width:97%;position:absolute;left:0;z-index:-1;line-height:30px;line-height:var(--f30);padding:0 5px;padding-left:var(--f10);top:2px;top:var(--f2);font-size:14px;color:#333;}
+.login .inp.focus .tit{display:none;}
+.login .inp.focus input{background:rgba(255, 255, 255, 0.7);}
+*/
+.login .inp{float: inherit !important;width: 96% !important;}
+.login .inp.code input{width:40%;}
+.login .inp.code .tit{width:40%;}
+.login .inp.code .codeImg{position:absolute;left:48%;top:0;height:30px;height:var(--f30);line-height:30px;line-height:var(--f30);text-decoration: underline;}
+.login .inp.code .codeImg img{vertical-align: middle;margin:0 5px;}
+.login .sub{line-height:30px;display:block;margin:20px 0;margin:var(--f20) 0;color:#fff;font-size:20px;font-size:var(--f20);padding:5px 0;padding:var(--f5) 0;text-align:center;background-color:#41a1de;background-color:var(--inpbg);}
+/*****手机端*********/
+@media screen and (max-width:800px){
+    .login{width:90%;margin-top:0;line-height:var(--f18);font-size:var(--f12)}
+    .login .span{display:block;}
+    .login .title{font-size:var(--f25);}
+    /*
+    
+    .login .inp{margin:(--f15) 0;}
+    .login .inp .tit{line-height:var(--f30);}
+    */
+    .login .inp.code input{width:96%;}
+    .login .inp.code .tit{width:96%;}
+    .login .inp.code{margin-bottom:var(--f15);}
+    .login .inp.code .codeImg{position:relative;left:0;margin-top: var(--f15);}
+    .login .inp.code .codeImg img{margin-left:0;}
+    .login .sub{margin-top:0;font-size:var(--f15);padding: var(--f8) 0;}
+}

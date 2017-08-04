@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html {width: 100%;height: 100%;margin:0;padding:0;font-family:"微软雅黑";overflow:hidden;background:#fff;}
+		#allmap{width:100%;height:75%;}
+		#r-result{width:100%;height:25%;position:relative;}
+		p{margin:5px; font-size:14px;}
+		.mapSure,.mapCancel{background:#2e8ec6;color: #fff;padding:2px 5px;border-radius:5px;margin:0 5px;}
+		.mapCancel{background:#ccc;}
+		.mapCancel:hover{background:#bd001e;}
+		#path .mapCancel{text-decoration: none;float:right;}
+		.cRed{color:#bd001e;}
+		#path{border-bottom: 1px solid #ccc;background: #f5f5f5;font-weight: 800;padding: .5em;}
+	</style>
+	<script type="text/javascript" src="http://lbsyun.baidu.com/skins/MySkin/resources/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4gegpKXog2vznQeZ9vO0vLcXmnDbAoGn"></script>
+	<title>选择地址</title>
+</head>
+<body>
+    <div id="r-result">
+	   <div id="path"><a href="javascript:" class="mapCancel">×</a>地图地位</div>
+	   <p>定位位置：<input type="text" id="suggestId" value="百度" size="20" /><a href="javascript:" class="mapSure">确认</a></p>
+	   <p>位置坐标：<input type="text" disabled="disabled" id="suggestVal"><a href="javascript:" class="mapCancel">取消</a></p>
+	   <p class="cRed">* 可拖动“标注”到指定位置，滚动鼠标滚轮对地图进行放大缩小</p>
+    </div>
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+    <div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript" src="map.js?a=2"></script>

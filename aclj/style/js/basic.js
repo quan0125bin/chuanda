@@ -1,0 +1,1 @@
+var basic={form:'ac',email:'lj_f123@126.com',www:'http://www.ac57.com',load:'style/image/load.gif',path:'/acadmin/'};

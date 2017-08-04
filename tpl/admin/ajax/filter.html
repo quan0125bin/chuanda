@@ -1,0 +1,77 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10 pr">
+    <div class="tab filterFirst"></div>
+    <div class="tab filter"></div>
+</div>
+<script type="text/javascript">
+
+var json=<{$dataJson}>,n=0;
+filterShow(json,n);
+
+function filterShow(json,n,obj){
+    $.each(json,function(k,data){
+	   adFilter(n,obj,true);
+	   var pobj=$('.filterTeams').last()
+	   pobj.removeClass('wackSure')
+	   pobj.attr('pid',data.id)
+	   pobj.addClass('boxclass'+data.id)
+	   pobj.find('input[type="hidden"]').val(data.id);
+	   pobj.find('select').val(data.type);
+	   pobj.find('.delClick').attr('sdata',data.uway);
+	   pobj.find('.inp').addClass('val').find('input[name="rank"]').val(data.rank);
+	   pobj.find('.inp').addClass('val').find('input[name="name"]').val(data.name);
+	   if(data.data){
+		  if(n>0){
+			 pobj.addClass('open').find('.delClick').attr({'class':'shide arrow','openClass':'.filterBoxs2','perentClass':'.boxclass'+data.id})
+		  }else{
+			 pobj.addClass('open').find('.delClick').attr({'class':'shideAll arrow','openClass':'.filterBoxs2','perentClass':'.boxclass'+data.id})
+		  }
+		  filterShow(data.data,n+1,pobj)
+	   }
+	   if(n==0){
+		  $('.filterFirst').append('<a href="javascript:" boxclass="'+data.id+'">'+data.name+'</a>');
+	   }
+    })
+}
+$('.filterFirst a').live('mouseover mouseleave click',function(e){
+    if(e.type=='mouseover'){
+	   $(this).addClass('hover');
+    }else if(e.type=='mouseleave'){
+	   $(this).removeClass('hover');
+    }else{
+	   $(this).addClass('hover').siblings('a').removeClass('hover');
+    }
+    $(".boxclass"+$(this).attr('boxclass')).css({'background-color':$(this).css('background-color')})
+})
+$('.filter .sureClick').live('click',function(){
+    var obj=$(this).parent().parent(),data={action:'sure'};
+    data['way']=obj.attr('way');
+    data['pid']=obj.parent().parent().attr('pid');
+    data['id']=obj.find('input[type="hidden"]').val();
+    data['rank']=obj.find('input[name="rank"]').val();
+    data['name']=obj.find('input[name="name"]').val();
+    data['type']=obj.find('select').val();
+    if(!data.name){
+	   alertLj('标题不能为空');return false;
+    }
+    if(obj.hasClass('lj'))return false;
+     $.ajax({
+	   type:'post',data:data,url:basic.path+'handle/post/',dataType:'json',beforeSend:function(XMLHttpRequest){
+		  basicHeader(XMLHttpRequest,'json');obj.addClass('lj');alertLj('load');
+	   },success:function(msg){
+		  obj.removeClass('lj');
+		  if(msg.error>0){
+			 alertLj(msg.html);
+		  }else if(msg.error==0){
+			 alertLjClose();obj.attr('pid',msg.id).removeClass('wackSure');//alertLj(msg.html);
+		  }else{
+			 alertLj(msg.html,{ok:'未知错误，刷新页面',click:"window.location.reload()",cancel:false});
+		  }
+	   },error:function(error){
+		  obj.removeClass('lj')
+		  errHandle(error);
+	   }
+    })
+    return false;
+})
+</script>

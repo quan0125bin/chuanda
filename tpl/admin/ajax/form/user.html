@@ -1,0 +1,186 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10">
+    <form id="userForm" way='user'>
+	   <fieldset class="open">
+		  <legend class="openClick">基本资料<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+	   <{if $smarty.session.user.rchk}>
+	   <{else}>
+			 <div class="clear">
+				<select name="chk" class="sel formVal">
+				    <option value="0">限制登录</option>
+				    <option value="1" <{if $data.chk}>selected="selected" <{/if}>>允许登录</option>
+				</select>
+				<select name="rchk" class="sel formVal">
+				    <option value="0">所有权限</option>
+				    <option value="1" <{if $data.rchk==1}>selected="selected" <{/if}>>更新需审核</option>
+				    <option value="2" <{if $data.rchk==2}>selected="selected" <{/if}>>仅查看</option>
+				</select>
+			 </div>
+			 <{/if}>
+			 <div class="inp">
+				<input type="hidden" name="id" class="formVal" value="<{$data.id}>">
+				<input type="text" name="name" class="formVal" value="<{$data.name}>" <{if $data.name}>disabled="disabled"<{/if}> maxlength="20">
+				<p class="tit">用户名</p>
+				<div class="faq">1、用户名唯一。<br>2、添加成功后无法修改，如需修改介意删除后再添加。</div>
+			 </div>
+			 <div class="inp">
+				<input type="text" name="uname" class="formVal" value="<{$data.uname}>" maxlength="20">
+				<p class="tit">昵称</p>
+			 </div>
+			 <div class="inp">
+				<input type="password" name="passwd" class="formVal" value="">
+				<p class="tit">登录密码</p>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <{if $smarty.session.user.rchk}>
+	   <{else}>
+	   <fieldset class="open">
+		  <legend class="openClick faqTs">
+			 系统设置权限<span class="arrow"></span>
+			 <label><input type="checkbox" class="check_no"></label>
+			 <div class="faq">1、勾选<span class="cOrange">橙色选框</span>，对此项将没有任何权限<br>2、不勾选<span class="cOrange">橙色选框</span>，对此项有所有权限<br>3、勾选对应栏目，对勾选项目有权限</div>
+		  </legend>
+		  <label class="checkbox cGreen b"><input type="checkbox" class="check_ball"> 所有设置</label>
+		  <div class="openBox clear roleBox" sdata="sys">
+			 <img src="style/image/load.gif">
+		  </div>
+	   </fieldset>
+	   <fieldset class="open">
+		  <legend class="openClick faqTs">
+			 栏目权限<span class="arrow"></span>
+			 <label><input type="checkbox" class="check_no"></label>
+			 <div class="faq">1、勾选<span class="cOrange">橙色选框</span>，对此项将没有任何权限<br>2、不勾选<span class="cOrange">橙色选框</span>，对此项有所有权限<br>3、勾选对应栏目，对勾选项目有权限</div>
+		  </legend>
+		  <label class="checkbox cGreen b"><input type="checkbox" class="check_ball"> 所有栏目</label>
+		  <div class="openBox clear roleBox" sdata="menu" action="getDataMenu">
+			 <img src="style/image/load.gif">
+		  </div>
+	   </fieldset>
+	   <{/if}>
+	   <div class="inp sub">
+		  <a href="javascript:" class="tit efColor">提交保存</a>
+		  <input type="submit" class="dn">
+	   </div>
+    </form>
+</div>
+<script type="text/javascript">
+var userRole=<{$data.role}>
+$('form .inp input').each(function(){
+    if($(this).val()){
+	   $(this).parent().addClass('val');
+    }else{
+	   $(this).parent().removeClass('val');
+    }
+})
+$('.faq').click(function(){
+    if($(this).parent().hasClass('.Ts')){
+	   if($(this).parent().find('.check_no').is(':checked')){
+		  $(this).parent().find('.check_no').removeAttr('checked');
+	   }else{
+		  $(this).parent().find('.check_no').attr('checked','checked')
+	   }
+    }
+})
+$('.openBox').each(function(){
+    var way=$(this).attr('sdata');
+    if(userRole){
+	   crole=eval('userRole.'+way)?eval('userRole.'+way).split(','):'';
+	   if(crole=='no'){
+		  $(this).parent().find('.check_no').attr('checked','checked')
+	   }
+    }
+})
+/***********获取权限数据************/
+function getBox(json,obj,pobj){
+    $.each(json,function(k,v){
+	   var nobj,crole;
+	   if(pobj){
+		  nobj=pobj;
+	   }else{
+		  obj.append('<div class="roleBoxs tab roleBoxs_'+v.id+'"></div>');
+		  nobj=obj.find('.roleBoxs.roleBoxs_'+v.id);
+	   }
+	   var way=obj.attr('sdata');
+	   if(userRole){
+		  crole=eval('userRole.'+way)?eval('userRole.'+way).split(','):'';
+	   }
+	   if(crole && $.inArray(v.id,crole)>-1)
+		  nobj.append('<label class="checkbox"><input type="checkbox" value="'+v.id+'" checked="checked"> '+v.name+'</label>');
+	   else
+		  nobj.append('<label class="checkbox"><input type="checkbox" value="'+v.id+'"> '+v.name+'</label>');
+	   if(!pobj){
+		  nobj.find('label').eq(0).addClass('b').find('input').addClass('check_all check_parent');
+	   }else{
+		  nobj.find('label').eq(0).nextAll().find('input').addClass('check_list');
+	   }
+	   if(v.data){
+		  getBox(v.data,obj,nobj);
+	   }
+    })
+}
+$('.check_ball').change(function(){
+    if($(this).is(':checked'))
+	   $(this).parents('.open').find('.check_list,.check_all').attr('checked','checked');
+    else
+	   $(this).parents('.open').find('.check_list,.check_all').removeAttr('checked');
+})
+setTimeout(function(){
+    $('.roleBox').each(function(){
+	   var obj=$(this),data={'out':1};
+	   data['way']=obj.attr('sdata');
+	   data['action']=obj.attr('action')?obj.attr('action'):'getData';
+	   
+	   obj.getMenuData(data,'getBox');
+    })
+},500)
+$('#userForm').submit(function(){
+    var obj=$(this),data={action:'sure'},role;
+    data['way']=obj.attr('way');
+    $(this).find('.formVal').each(function(){
+	   data[$(this).attr('name')]=$(this).val();
+    })
+    data['role']='';
+    $('.openBox').each(function(){
+	   role='';
+	   if($(this).parent().find('.check_no').is(':checked')){
+		  role='no';
+	   }else{
+		  $(this).find('input[type="checkbox"]:checked').each(function(){
+			 role+=role?(','+$(this).val()):$(this).val();
+		  })
+	   }
+	   if(role){
+		  role='"'+$(this).attr('sdata')+'":"'+role+'"';
+		  data['role']+=data['role']?(','+role):role;
+	   }
+    })
+    data['role']='{'+data['role']+'}';
+    if(!data['name']){alertLj('用户名不能为空');return false;}
+    if(!data['uname']){alertLj('昵称不能为空');return false;}
+    if(!data['id'] && !data['passwd']){alertLj('密码不能为空');return false;}
+    if(obj.hasClass('lj'))return false;
+    $.ajax({
+	   type:'post',data:data,url:basic.path+'handle/post/',dataType:'json',beforeSend:function(XMLHttpRequest){
+		  basicHeader(XMLHttpRequest,'json');obj.addClass('lj');alertLj('load');
+	   },success:function(msg){
+		  obj.removeClass('lj');
+		  if(msg.error>0){
+			 alertLj(msg.html);
+		  }else if(msg.error==0){
+			 if(data.id)
+			 alertLj(msg.html);
+			 else
+			 alertLj(msg.html,{ok:'继续添加',click:"alertLjClose($('.refreshFormClick').click())",cancel:true,cancelClick:"alertLjClose($('.retrunFormClick').click())"});
+		  }else{
+			 alertLj(msg.html,{ok:'未知错误，刷新页面',click:"window.location.reload()",cancel:false});
+		  }
+	   },error:function(error){
+		  obj.removeClass('lj')
+		  errHandle(error);
+	   }
+    })
+    return false;
+})
+</script>

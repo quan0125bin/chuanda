@@ -1,0 +1,23 @@
+<{if $filename=='/index.html'}>
+<title><{if $web.seoTitle}><{$web.seoTitle}><{else}><{$web.title}><{/if}></title>
+<meta name="keywords" content="<{$web.seoKeyWord}>">
+<meta name="description" content="<{$web.seoDes}>">
+<{else}>
+    <{if $data.seoTitle}>
+<title><{$data.seoTitle}></title>
+<meta name="keywords" content="<{$data.seoKeyWord}>">
+<meta name="description" content="<{$data.seoDes}>">
+    <{elseif $smarty.get.pid && $dq_menu.seoTitle}>
+<title><{$dq_menu.seoTitle}></title>
+<meta name="keywords" content="<{$dq_menu.seoKeyWord}>">
+<meta name="description" content="<{$dq_menu.seoDes}>">
+    <{elseif $m_menu.seoTitle}>
+<title><{$m_menu.seoTitle}></title>
+<meta name="keywords" content="<{$m_menu.seoKeyWord}>">
+<meta name="description" content="<{$m_menu.seoDes}>">
+    <{else}>
+<title><{if $data.name}><{$data.name}>-<{$web.title}><{else}><{$m_menu._name[0]}>-<{$web.title}><{/if}></title>
+<meta name="keywords" content="<{$web.title}>,<{$m_menu.name}>,<{$data.name}>">
+<meta name="description" content="<{$data.conts}>">
+    <{/if}>
+<{/if}>

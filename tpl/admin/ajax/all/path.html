@@ -1,0 +1,17 @@
+<div class="path">
+    <span class="t"><{$title}></span>
+    <{if $return}>
+    <a href="<{$return.url}>" class="aclick retrunFormClick efColor"><{$return.title}></a>
+    <{elseif $add}>
+	   <{if $returnUrl}><a href="<{$return.returnUrl}>" class="aclick retrunFormClick efColor"><{$returnUrl.title}></a><{/if}>
+	   <a href="<{$add.url}>" class="aclick addFormClick efColor">新增<{$add.title}></a>
+    <{/if}>
+    <a href="<{if $smarty.server.QUERY_STRING}>?<{$smarty.server.QUERY_STRING}><{elseif $smarty.server.REQUEST_URI}><{$smarty.server.REQUEST_URI}><{else}>javascript:window.location.reload();<{/if}>" class="aclick refreshFormClick efColor">刷新</a>
+    <{if $form}>
+    <a href="javascript:" class="aclick subFormClick efColor">提交保存</a>
+    <{/if}>
+</div>
+<script type="text/javascript">
+$('.min>.path').remove();
+$('.minBox').before($('.path')).css({height:$('.min').height()-$('.path').outerHeight()});
+</script>

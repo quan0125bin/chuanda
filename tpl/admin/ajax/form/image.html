@@ -1,0 +1,116 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10">
+    <form id="newsForm" way='image'>
+	   <fieldset class="open">
+		  <legend class="openClick">内容<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+			 <div class="clear">
+				<select name="pid" class="sel formVal">
+				    <option value="<{$pdata.id}>">所属【<{$pdata.name}>】</option>
+				</select>
+				<select name="chk" class="sel formVal">
+				    <option value="0">前端【隐藏】</option>
+				    <option value="1" <{if !$data.id || $data.chk}>selected="selected"<{/if}>>前端【显示】</option>
+				</select>
+			 </div>
+			 <div class="clear">
+				<div class="inp notNull">
+				    <input type="hidden" name="id" class="formVal" value="<{$data.id}>">
+				    <input type="text" name="name" class="formVal" value="<{$data.name}>" >
+				    <p class="tit">标题<span>（必填）</span></p>
+				</div>
+				<div class="inp">
+				    <input type="text" name="url" value="<{$data.url}>" class="formVal">
+				    <p class="tit">链接地址<span>（外链需加上http/https）</span></p>
+				    <div class="faq">添加后，前端进入详情页会自动跳转到该地址。</div>
+				</div>
+				<div class="inp">
+				    <input type="text" name="rank" value="<{$data.rank}>" maxlength="11" class="formVal">
+				    <p class="tit">排序</p>
+				    <div class="faq">1、可空。<br>2、要求纯数字。<br>3、顺序为从大到小降序，最大的排列在最前面，同样大小以添加时间为准</div>
+				</div>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <fieldset class="open<{if $pdata.id!='about'}> dn<{/if}>">
+		  <legend class="openClick">描述<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+			 <div class="editorBox">
+			 <div class="textarea inp"><textarea name="cont" class="formVal" name="cont"><{$data.cont}></textarea><p class="tit">描述</p></div>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <{if $pdata.id=='video'}>
+	   <fieldset class="open<{if !$pdata.size}> dn<{/if}>">
+		  <legend class="openClick">展示视频<span class="arrow"></span><span class="faq"><{$pdata.name}>：<{$pdata.size}></span></legend>
+		  <div class="openBox clear">
+			 <div class="inp notNull inpMax">
+				<input type="hidden" name="img" class="formVal" value="<{$data.img}>" box='fileSwfBox'>
+				<input class="imgFile" id="imgFile" type="file" txt='上传视频' multiple="true" val="img" max="1">
+				<div class="fileSwfBox" val="img"></div>
+				<script type="text/javascript">$('#imgFile').upFile();</script>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <{else}>
+	   <fieldset class="open<{if !$pdata.size}> dn<{/if}>">
+		  <legend class="openClick">展示图片<span class="arrow"></span><span class="faq"><{$pdata.name}>：<{$pdata.size}></span></legend>
+		  <div class="openBox clear">
+			 <div class="inp notNull inpMax">
+				<input type="hidden" name="img" class="formVal" value="<{$data.img}>" box='fileSwfBox'>
+				<input class="imgFile" id="imgFile" type="file" txt='上传图片' multiple="true" val="img" max="1">
+				<div class="fileSwfBox" val="img"></div>
+				<script type="text/javascript">$('#imgFile').upFile();</script>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <{/if}>
+	   <div class="inp sub">
+		  <a href="javascript:" class="tit efColor">提交保存</a>
+		  <input type="submit" class="dn">
+	   </div>
+    </form>
+</div>
+<script type="text/javascript">
+var ue;
+$('form .inp input,form .inp textarea').each(function(){
+    if($(this).val()){
+	   $(this).parent().addClass('val');
+    }else{
+	   $(this).parent().removeClass('val');
+    }
+})
+$('#newsForm').submit(function(){
+    var obj=$(this),data={action:'sure'};
+    data['way']=obj.attr('way');
+    $(this).find('.formVal').each(function(){
+	   data[$(this).attr('name')]=$(this).val();
+    })
+    if(ue)data['cont']=ue.getContent();
+    if(!data['name']){alertLj('标题不能为空');return false;}
+    if(obj.hasClass('lj'))return false;
+    $.ajax({
+	   type:'post',data:data,url:basic.path+'handle/post/',dataType:'json',beforeSend:function(XMLHttpRequest){
+		  basicHeader(XMLHttpRequest,'json');obj.addClass('lj');alertLj('load');
+	   },success:function(msg){
+		  obj.removeClass('lj');
+		  if(msg.error>0){
+			 alertLj(msg.html);
+		  }else if(msg.error==0){
+			 if(data.id)
+				alertLj(msg.html);
+			 else
+				alertLj(msg.html,{ok:'继续添加',click:"$('.refreshFormClick').addClass('ljSure').click()",cancel:true,cancelClick:"$('.retrunFormClick').addClass('ljSure').click()"});
+		  }else{
+			 alertLj(msg.html,{ok:'未知错误，刷新页面',click:"window.location.reload()",cancel:false});
+		  }
+		  $('.alertSure').focus();
+		  $('.alertSure').select();
+	   },error:function(error){
+		  obj.removeClass('lj')
+		  errHandle(error);
+	   }
+    })
+    return false;
+})
+</script>

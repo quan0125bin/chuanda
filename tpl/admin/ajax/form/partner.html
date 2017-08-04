@@ -1,0 +1,116 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10">
+    <form id="newsForm" way='info'>
+	   <fieldset class="open">
+		  <legend class="openClick">所属/状态<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+			 <div class="clear">
+				<select name="pid" class="sel formVal">
+				<{section loop=$pdata name="p"}>
+				    <option value="<{$pdata[p].id}>" <{if $smarty.get.pid && $smarty.get.pid==$pdata[p].id}>selected="selected"<{/if}>>所属【<{$pdata[p].name}>】</option>
+				    <{/section}>
+				</select>
+				<select name="chk" class="sel formVal">
+				    <option value="0">前端【隐藏】</option>
+				    <option value="1" <{if !$data.id || $data.chk}>selected="selected"<{/if}>>前端【显示】</option>
+				</select>
+				<select name="hchk" class="sel formVal">
+				    <option value="0">网站首页【隐藏】</option>
+				    <option value="1" <{if $data.hchk}>selected="selected"<{/if}>>网站首页【显示】</option>
+				</select>
+				<select name="mchk" class="sel formVal">
+				    <option value="0">栏目首页【隐藏】</option>
+				    <option value="1" <{if $data.mchk}>selected="selected"<{/if}>>栏目首页【显示】</option>
+				</select>
+				<input type="hidden" name="id" class="formVal" value="<{$data.id}>">
+			 </div>
+		  </div>
+	   </fieldset>
+	   <fieldset class="open">
+		  <legend class="openClick">内容<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+			 <div class="clear">
+				<div class="inp notNull">
+				    <input type="text" name="name" class="formVal" value="<{$data.name}>" maxlength="20">
+				    <p class="tit">标题<span>（必填）</span></p>
+				</div>
+				<div class="inp">
+				    <input type="text" name="url" value="<{$data.url}>" class="formVal">
+				    <p class="tit">链接地址<span>（外链需加上http/https）</span></p>
+				    <div class="faq">添加后，前端进入详情页会自动跳转到该地址。</div>
+				</div>
+				<div class="inp">
+				    <input type="text" name="lname" value="<{$data.lname}>" class="formVal">
+				    <p class="tit">列表标题</p>
+				    <div class="faq">添加后所有非详情页展示的标题均显示次标题</div>
+				</div>
+				<div class="inp">
+				    <input type="text" name="rank" value="<{if $data.rank}><{$data.rank}><{else}>0<{/if}>" maxlength="11" class="formVal">
+				    <p class="tit">排序</p>
+				    <div class="faq">1、可空。<br>2、要求纯数字。<br>3、顺序为从大到小降序，最大的排列在最前面，同样大小以添加时间为准</div>
+				</div>
+				<div class="inp">
+				    <input type="text" name="stime" value="<{$data.stime}>" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" maxlength="11" class="formVal laydate-icon" >
+				    <p class="tit">显示时间</p>
+				</div>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <fieldset class="open">
+		  <legend class="openClick">列表图片<span class="arrow"></span><span class="faq">【<{if $ddata.type==22}>合作伙伴：88*70px<{else}>新闻240*165<{/if}>】</span></legend>
+		  <div class="openBox clear">
+			 <div class="inp notNull inpMax">
+				<input type="hidden" name="img" class="formVal" value="<{$data.img}>" box='fileSwfBox'>
+				<input class="imgFile" id="imgFile" type="file" txt='上传图片' multiple="true" val="img" max="1">
+				<div class="fileSwfBox" val="img"></div>
+				<script type="text/javascript">$('#imgFile').upFile();</script>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <div class="inp sub">
+		  <a href="javascript:" class="tit efColor">提交保存</a>
+		  <input type="submit" class="dn">
+	   </div>
+    </form>
+</div>
+<script type="text/javascript">
+$('form .inp input').each(function(){
+    if($(this).val()){
+	   $(this).parent().addClass('val');
+    }else{
+	   $(this).parent().removeClass('val');
+    }
+})
+$('#newsForm').submit(function(){
+    var obj=$(this),data={action:'sure'};
+    data['way']=obj.attr('way');
+    $(this).find('.formVal').each(function(){
+	   data[$(this).attr('name')]=$(this).val();
+    })
+    if(!data['name']){alertLj('标题不能为空');return false;}
+    if(obj.hasClass('lj'))return false;
+    $.ajax({
+	   type:'post',data:data,url:basic.path+'handle/post/',dataType:'json',beforeSend:function(XMLHttpRequest){
+		  basicHeader(XMLHttpRequest,'json');obj.addClass('lj');alertLj('load');
+	   },success:function(msg){
+		  obj.removeClass('lj');
+		  if(msg.error>0){
+			 alertLj(msg.html);
+		  }else if(msg.error==0){
+			 if(data.id)
+				alertLj(msg.html);
+			 else
+				alertLj(msg.html,{ok:'继续添加',click:"$('.refreshFormClick').addClass('ljSure').click()",cancel:true,cancelClick:"$('.retrunFormClick').addClass('ljSure').click()"});
+		  }else{
+			 alertLj(msg.html,{ok:'未知错误，刷新页面',click:"window.location.reload()",cancel:false});
+		  }
+		  $('.alertSure').focus();
+		  $('.alertSure').select();
+	   },error:function(error){
+		  obj.removeClass('lj')
+		  errHandle(error);
+	   }
+    })
+    return false;
+})
+</script>

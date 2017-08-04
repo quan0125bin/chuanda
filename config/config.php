@@ -1,0 +1,46 @@
+<?php
+/*
+环境要求：mysql5.0+   php5.4+
+--常量命名规则：第一个首字母大写，单词首字母大写
+--文件夹说明
+class：公共类
+config：配置文件
+data：数据处理类
+log：日志文件
+--错误代码说明
+0：运行成功
+1：终止继续
+2：有错误，但可以继续执行
+*/
+error_reporting(0);
+set_time_limit(0);
+session_start();
+define('Title','川大');//项目标题
+/****************************************************/
+define('Log',true);//调试状态
+define('LogFile',false);//日志文件记录
+define('LogEmail',false);//日志邮件记录
+define('ErrSql',true);//错误时Sql输出
+define('FileOver',2);//临时文件保存天数
+define('MenuSons',1);//子栏目限定级数
+/***************************************************/
+define('DbPrefix','acar_');//表前缀
+define('Localhost','127.0.0.1');//默认数据库地址
+define('LocalhostName','root');//默认数据库用户名
+define('LocalhostPasswd','123456');//默认数据库密码
+define('LocalhostDbname','chuanda');//默认数据库
+define('LocalhostTableMax',1000000);//每张表记录最多100万条数据
+define('CodeTimeOut',60);//短信有效期 秒
+define('MaxShaixuan',15);//最大筛选项
+define('SYS',10000);//系统帐号，系统平台
+/***************************************************/
+define('LogToEmail','1006570668@qq.com');//日志发送邮件
+header('Content-Type:text/html;charset=utf-8');
+$mtype=array(
+    array('id'=>10,'name'=>'资讯列表'),
+    array('id'=>20,'name'=>'图片列表'),
+    array('id'=>30,'name'=>'单页介绍'),
+    array('id'=>31,'name'=>'联系我们'),
+    array('id'=>33,'name'=>'在线留言')
+    );
+define('MenuType',json_encode($mtype));

@@ -1,0 +1,158 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10">
+    <form id="menuForm" way='menu'>
+	   <fieldset class="open">
+		  <legend class="openClick">基本资料<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+			 <div class="clear">
+				<{if $pdata}>
+				    <select name="pid" class="sel formVal">
+				    <{section loop=$pdata name="p"}>
+				    <{if $pdata[p].id==$data.id_}>
+				    <{else}>
+					   <option value="<{$pdata[p].id}>" <{if $sdata.pid && $sdata.pid==$pdata[p].id}>selected="selected"<{/if}>>所属【<{$pdata[p].name}>】</option>
+					   <{/if}>
+					   <{/section}>
+				    </select>
+				<{else}>
+				    <select name="pid" class="sel formVal">
+					   <option value="0">顶级栏目</option>
+				    </select>
+				<{/if}>
+				<{if $data.pid || $sdata.pid}>
+				    <select name="chk" class="sel formVal">
+					   <option value="0">状态【隐藏】</option>
+					   <option value="1" <{if !$data.id || $data.chk}>selected="selected"<{/if}>>状态【显示】</option>
+				    </select>
+				    <select name="dchk" class="sel formVal">
+					   <option value="0">底部导航【隐藏】</option>
+					   <option value="1" <{if $data.dchk}>selected="selected"<{/if}>>底部导航【显示】</option>
+				    </select>
+				    <select name="type" class="sel formVal">
+					   <{section loop=$menuType name="m"}>
+					   <option value="<{$menuType[m].id}>" <{if $data.type==$menuType[m].id}>selected="selected"<{/if}>>栏目类型【<{$menuType[m].name}>】</option>
+					   <{/section}>
+				    </select>
+				<{else}>
+				    <select name="chk" class="sel formVal">
+					   <option value="0">顶部导航【隐藏】</option>
+					   <option value="1" <{if !$data.id || $data.chk}>selected="selected"<{/if}>>顶部导航【显示】</option>
+				    </select>
+				    <select name="type" class="sel formVal">
+					   <option value="0">栏目首页【默认】</option>
+					   <option value="1" <{if $data.type}>selected="selected"<{/if}>>栏目首页【独立】</option>
+				    </select>
+				<{/if}>
+				<input type="hidden" name="id" class="formVal" value="<{$data.id}>">
+			 </div>
+			 <div class="clear">
+			 <{if $sdata.pid}>
+				<div class="inp">
+				    <input type="text" name="name" class="formVal" value="<{$data.name}>" maxlength="20">
+				    <p class="tit">栏目名称</p>
+				</div>
+				<div class="inp">
+				    <input type="text" name="nname" class="formVal" value="<{$data.nname}>" maxlength="50">
+				    <p class="tit">英文名称</p>
+				</div>
+			 <{else}>
+				<div class="inp">
+				    <input type="text" name="name" class="formVal" value="<{$data.name}>" maxlength="20">
+				    <p class="tit">栏目名称</p>
+				</div>
+				<div class="inp">
+				    <input type="text" name="nname" class="formVal" value="<{$data.nname}>" maxlength="50">
+				    <p class="tit">副标题</p>
+				</div>
+			 <{/if}>
+			 </div>
+			 <div class="inp">
+				<input type="text" name="url" value="<{$data.url}>" class="formVal">
+				<p class="tit">栏目地址<span>（外链需加上http/https）</span></p>
+				<div class="faq">1、顶级栏目地址以xxx.php命名规则，程序会自动生成对应文件。<br>2、非顶级栏目填写地址后均为跳转。<br>3、外链需加上http/https，访问时会直接跳转到指定页面。</div>
+			 </div>
+			 <div class="inp">
+				<input type="text" name="rank" value="<{$data.rank}>" maxlength="11" class="formVal">
+				<p class="tit">排序<span>（纯数字从小到大升序）</span></p>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <{if !$sdata.pid}>
+	   <fieldset class="fieldsets">
+		  <fieldset class="open">
+			 <legend class="openClick">BANNER图片<span class="arrow"></span><span class="faq">【BANNER图片1920*420px】</span></legend>
+			 <div class="openBox clear">
+				<div class="inp notNull inpMax">
+				    <input type="hidden" name="img" class="formVal" value="<{$data.img}>" box='fileSwfBox'>
+				    <input class="imgFile" id="imgFile" type="file" txt='上传图片' multiple="true" val="img" max="1">
+				    <div class="fileSwfBox" val="img"></div>
+				    <script type="text/javascript">$('#imgFile').upFile();</script>
+				</div>
+			 </div>
+		  </fieldset>
+	   </fieldset>
+	   <{/if}>
+	   <fieldset class="open">
+		  <legend class="openClick">SEO<span class="arrow"></span></legend>
+		  <div class="openBox clear">
+			 <div class="inp">
+				<input type="text" name="seoTitle" class="formVal" value="<{$data.seoTitle}>">
+				<p class="tit">Title</p>
+			 </div>
+			 <div class="inp">
+				<input type="text" name="seoKeyWord" class="formVal" value="<{$data.seoKeyWord}>">
+				<p class="tit">KeyWords</p>
+			 </div>
+			 <div class="inp">
+				<input type="text" name="seoDes" class="formVal" value="<{$data.seoDes}>">
+				<p class="tit">Description</p>
+			 </div>
+		  </div>
+	   </fieldset>
+	   <div class="inp sub">
+		  <a href="javascript:" class="tit efColor">提交保存</a>
+		  <input type="submit" class="dn">
+	   </div>
+    </form>
+</div>
+<script type="text/javascript">
+$('form .inp input,form .inp textarea').each(function(){
+    if($(this).val()){
+	   $(this).parent().addClass('val');
+    }else{
+	   $(this).parent().removeClass('val');
+    }
+})
+$('#menuForm').submit(function(){
+    var obj=$(this),data={action:'sure'};
+    data['way']=obj.attr('way');
+    $(this).find('.formVal').each(function(){
+	   data[$(this).attr('name')]=$(this).val();
+    })
+    if(!data['name']){alertLj('栏目名称不能为空');return false;}
+    if(obj.hasClass('lj'))return false;
+    $.ajax({
+	   type:'post',data:data,url:basic.path+'handle/post/',dataType:'json',beforeSend:function(XMLHttpRequest){
+		  basicHeader(XMLHttpRequest,'json');obj.addClass('lj');alertLj('load');
+	   },success:function(msg){
+		  obj.removeClass('lj');
+		  if(msg.error>0){
+			 alertLj(msg.html);
+		  }else if(msg.error==0){
+			 if(data.id)
+				alertLj(msg.html);
+			 else
+				alertLj(msg.html,{ok:'继续添加',click:"$('.refreshFormClick').addClass('ljSure').click()",cancel:true,cancelClick:"$('.retrunFormClick').addClass('ljSure').click()"});
+		  }else{
+			 alertLj(msg.html,{ok:'未知错误，刷新页面',click:"window.location.reload()",cancel:false});
+		  }
+		  $('.alertSure').focus();
+		  $('.alertSure').select();
+	   },error:function(error){
+		  obj.removeClass('lj')
+		  errHandle(error);
+	   }
+    })
+    return false;
+})
+</script>

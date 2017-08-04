@@ -1,0 +1,143 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+input[type="submit"], input[type="reset"], input[type="button"], input[type="email"],
+button {
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+}
+body {
+    font-style: normal;
+    font-size: 12px;
+    background:#fff;
+    font-family: 微软雅黑;
+
+}
+html,body{height:100%}
+::-webkit-input-placeholder {
+    color: #666;
+    font-size:14px;
+}
+
+input[type="text"], input[type="password"] ,select,textarea{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    border-radius: 0;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: normal;
+}
+select{-webkit-appearance: none}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 12px;
+    vertical-align: baseline;
+    text-decoration: none;
+    list-style: none;
+    font-style: normal;
+
+}
+.input{font-size:12px;}
+::-webkit-input-placeholder{font-size:12px}
+.fr {
+    float: right
+}
+
+.fl {
+    float: left;
+}
+.clearfix:after{display: block; content: "\20"; height: 0; clear: both; overflow: hidden; visibility: hidden;}/*ie8以上*/
+.header-box{width: 100%; background:#fff}
+.top-gony{width: 1200px; margin: auto; height: 80px; overflow: hidden}
+.top-gony .left-logo{width: 229px; height: 65px; margin-top:9px; float:left}
+.top-gony .nav{float:right; }
+.top-gony .nav ul li{ float:left; }
+.top-gony .nav ul li a{color:#333333; font-size: 14px;  display: inline-block; line-height: 80px; padding:0 18px;}
+.top-gony .nav ul li.on a{color:#fff; background: #3269c3;display: inline-block}
+.top-gony .nav ul li a:hover{color:#fff; background: #3269c3; transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s;}
+.top-gony .loxgne{float:right}
+.top-gony .loxgne ul li{line-height: 68px; color:#d93715; font-size: 24px; font-family: "Arial"; background: url(../images/dinahua.png) no-repeat left center; padding-left: 35px;}
+.banner-box{width: 100%; height: 600px; position: relative}
+#slides { display:block; width:100%; height: 600px; list-style:none; padding:0; margin:0; position:relative; overflow: hidden }
+#slides ul li { display:block; width:100%; height:100%; list-style:none; padding:0; margin:0; position:absolute;}
+#slides ul li a { display:block; width:100%; height:100%; text-indent:-9999px}
+
+#slides ul li{animation:lo 20s;
+}
+@keyframes lo
+{
+    from {  transform: scale(1);
+        -webkit-transform: scale(1);
+        -o-transform: scale(1);
+        -moz-transform: scale(1);
+        transition: all 30s;
+        -webkit-transition: all 30s;
+        -o-transition: all 30s;
+        -moz-transition:all 30s;
+    }
+    to {  transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -o-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        transition: all 30s;
+        -webkit-transition: all 30s;
+        -o-transition: all 30s;
+        -moz-transition:all 30s;
+    }
+}
+#slides > p{width: 45px; height: 84px; position: absolute; top:50%; margin-top:-42px}
+#slides > p.left{left: 125px; background: url(../images/left.png) no-repeat; z-index: 999999999}
+#slides > p.right{right: 125px; background: url(../images/right.png) no-repeat; z-index: 999999999}
+#pagination{display: none;}
+.footerbox{width: 100%; background: #1e1e1e; padding-top:50px; margin-top:100px;}
+.footer-mlidden{width: 1200px; margin: auto; overflow: hidden; padding-bottom: 50px;}
+.footer-mlidden .pljrn{width: 250px; float:left;}
+.footer-mlidden .pljrn h1{color:#fff; font-size: 24px;}
+.footer-mlidden .pljrn h1 p{color:#fff; font-size: 14px; text-transform: uppercase}
+.milnkrn{width: 600px; float:left}
+.list-text ul{overflow: hidden}
+.list-text ul li{width: 300px; float:left;padding-top:10px; color:#d0d0d0; font-size: 14px;}
+.glkomr{width: 350px; float:left; padding-left: 75px;}
+
+.glkomr h1{color:#fff; font-size: 24px;}
+.glkomr ul li{margin-top:15px; position: relative}
+.glkomr ul li p{border:1px solid #6e6e6e; width: 120px; height: 120px; padding:5px; border-radius: 5px; position: absolute;    top: -46px;  left: 60px; opacity: 0;transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s;}
+.glkomr ul li p em{display: block; position: absolute; width: 12px; height: 19px; background: url(../images/jt.png) no-repeat center; left: -12px; top:50%; margin-top:-9px;}
+.glkomr ul li p img{padding:5px; background: #fff; box-sizing: border-box;display: block}
+.glkomr ul li.pg:hover p{opacity: 1; left: 50px;transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s}
+.pnr{width: 100%; background: #181818;}
+.pnr ul{width: 1200px; margin: auto; height: 30px;}
+.pnr ul li span{color:#5e5e5e; font-size: 14px; line-height: 30px; display: inline-block}
+.pnr ul li a{color:#5e5e5e; font-size: 14px; line-height: 30px; display: inline-block; float: right}
+.xunfu{width: 60px; position: fixed; top:40%; right: 20px; z-index: 96699999}
+.xunfu ul li{width: 60px; height: 60px; text-align: center; background: #aaaaaa; margin-top:1px; position: relative; transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s}
+.xunfu ul li a p{color:#ffffff; font-size: 12px;}
+.xunfu ul li a img{margin-top: 10px;}
+.xunfu ul li:hover{background: #3269c3; transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s}
+.xunfu ul li > p{background: #3269c3; padding:10px;z-index: -1; position: absolute; left: -140px; top:0px; width: 120px; opacity: 0;transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s }
+.xunfu ul li.wex:hover >p{opacity: 1; left: -120px; transition: all .5s;  -webkit-transition: all .5s;  -o-transition: all .5s;  -moz-transition: all .5s;z-index: 99999999}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

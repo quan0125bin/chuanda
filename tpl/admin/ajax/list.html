@@ -1,0 +1,115 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10">
+    <form id="searchForm" onsubmit="return false">
+	   <fieldset class="open <{if !$smarty.get.name}>close<{/if}>">
+		  <legend class="openClick">搜索<span class="arrow"></span></legend>
+		  <div class="openBox clear <{if !$smarty.get.name}>dn<{/if}>">
+			 <input type="hidden" name="form" class="formVal" value="<{$smarty.get.form}>">
+			 <input type="hidden" name="action" class="formVal" value="<{$smarty.get.action}>">
+			 <{if $smarty.get.pid}><input type="hidden" name="pid" class="formVal" value="<{$smarty.get.pid}>"><{/if}>
+			 <input type="hidden" name="page" class="formVal" value="1">
+			 <div class="inp">
+				<input type="text" name="name" class="formVal" value="<{$smarty.get.name}>" maxlength="80">
+				<p class="tit">关键词</p>
+			 </div>
+			 <div class="inp inpSmall">
+				<input type="text" name="psize" class="formVal" psize="<{$page.psize}>" value="<{$page.psize}>" maxlength="4">
+				<p class="tit">条/页</p>
+			 </div>
+			 <div class="inp sub search">
+				<a href="javascript:" class="tit efColor">搜索</a>
+				<input type="submit" class="dn">
+			 </div>
+		  </div>
+	   </fieldset>
+    </form>
+    <div class="tab">
+	   <table>
+		  <thead>
+			 <tr>
+				<th width="20"><input class="check_all" type="checkbox" value=""></th>
+				<{section loop=$thead name="t" start="1"}>
+				    <th<{if !$thead[t][2]}> class="n"<{/if}><{if $thead[t][1]}> width="<{$thead[t][1]}>"<{/if}>><{$thead[t][0]}></th>
+				<{/section}>
+			 </tr>
+		  </thead>
+		  <tbody>
+		  <{if !$tdata}>
+		  <tr>
+			 <td colspan="<{$thead|@count}>" class="tc">暂无数据</td>
+		  </tr>
+		  <{/if}>
+		  <{section loop=$tdata name="d"}>
+			 <tr>
+				<td><input class="check_list" type="checkbox" value="<{$tdata[d][0]}>"></td>
+				<{section loop=$tdata[d] name="t" start="1"}>
+				    <td<{if !$thead[t][2]}> class="n"<{/if}>><{$tdata[d][t]}></td>
+				<{/section}>
+			 </tr>
+		  <{/section}>
+		  </tbody>
+		  <tfoot>
+			 <tr>
+				<td><{if $del}><a href="javascript:" class="delClicks" title="删除选中数据"><{/if}></a></td>
+				<td colspan="<{$thead|@count}>">
+				<span class="page">
+				    <a href="javascript:" title="上一页"><<</a>
+				    第 <select name="page" class="cRed b"></select> 页
+				    <a href="javascript:" title="下一页" class="pnext">>></a>
+				</span>
+				共 <span class="cRed b dataMax" page="<{$page.page}>" pages="<{$page.pages}>"><{$max}></span> 条记录
+				</td>
+			 </tr>
+		  </tfoot>
+	   </table>
+    </div>
+</div>
+<script type="text/javascript">
+var page=$('.dataMax').attr('page'), pages=$('.dataMax').attr('pages');
+for(var i=1;i<=pages;i++){
+    $('select[name="page"]').append('<option value="'+i+'"'+(i==page?' selected="selected"':'')+'>'+(i<10?'0'+i:i)+'</option>');
+}
+$('select[name="page"]').change(function(){
+    $('#searchForm input[name="page"]').val($(this).val())
+    $('#searchForm').submit();
+})
+$('#searchForm .inp input').each(function(){
+    if($(this).val()){
+	   $(this).parent().addClass('val');
+    }else{
+	   $(this).parent().removeClass('val');
+    }
+})
+$('input[name="psize"]').keyup(function(){
+    if($(this).val()){
+	   var v=parseInt($(this).val());
+	   if(!v)v=$(this).attr('psize')
+	   $(this).val(v)
+    }
+})
+$('.page a').click(function(){
+    var p=$('select[name="page"]').val();
+    if(p){
+	   if($(this).hasClass('pnext')){
+		  p++;
+	   }else{
+		  p--;
+	   }
+	   if(p<0)return false;
+	   if(p>pages)return false;
+	   $('#searchForm input[name="page"]').val(p)
+	   $('#searchForm').submit();
+    }
+    return false;
+})
+$('#searchForm').submit(function(){
+    var url='',surl;
+    $(this).find('.formVal').each(function(){
+	   surl=$(this).attr('name')+'='+$(this).val();
+	   url+=url?('&'+surl):surl;
+    })
+    $('.refreshFormClick').attr('href','?'+url).click();
+    $(this).find('input[name="page"]').val(1)
+    return false;
+});
+</script>

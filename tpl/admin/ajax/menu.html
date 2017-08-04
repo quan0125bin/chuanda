@@ -1,0 +1,84 @@
+<{include file="admin/ajax/all/path.html"}>
+<div class="p10">
+    <div class="tab menu">
+	   <table>
+		  <thead>
+			 <tr>
+				<{section loop=$thead name="t" start="1"}>
+				    <th class="<{if !$thead[t][2]}>n<{/if}><{if $smarty.section.t.iteration==1}> open close<{/if}>"<{if $thead[t][1]}> width="<{$thead[t][1]}>"<{/if}>>
+					   <{if $smarty.section.t.iteration==1}><label><input class="check_all" type="checkbox" value=""><{$thead[t][0]}></label><{else}><{$thead[t][0]}><{/if}>
+					   <{if $smarty.section.t.iteration==1}><span class="shideAll arrow"></span><{/if}>
+				    </th>
+				<{/section}>
+			 </tr>
+		  </thead>
+		  <tbody></tbody>
+		  <tfoot>
+			 <tr>
+				<td><{if $del}><a href="javascript:" class="delClicks" title="删除选中数据"><{/if}></a></td>
+				<td colspan="<{$thead|@count}>"></td>
+			 </tr>
+		  </tfoot>
+	   </table>
+    </div>
+</div>
+<script type="text/javascript">
+var json=<{$dataJson}>,tr,selectType=<{$smarty.const.MenuType}>,selectVal='';
+$.each(selectType,function(k,v){
+    selectVal+='<option value="'+v.id+'">'+v.name+'</option>';
+})
+selectVal='<select class="sel selectType">'+selectVal+'</select>';
+menuShow(json,json[0].pid,1);
+$('.menu thead tr>th').each(function(){
+    if($(this).hasClass('n')){
+	   var i=$(this).index();
+	   $('.menu tbody tr').each(function(){
+		  $(this).find('td').eq(i).addClass('n');
+	   })
+    }
+})
+$('.menu_1 .menu_name').append('<span class="shide arrow" perentClass=".menuTr" openClass="cls" sibl="true"></span>').parent().addClass('open');
+$('.shideAll').click(function(){
+    $('.shide').click();
+})
+$('.shide').click();
+$('.selectType').change(function(){
+    var obj=$(this),data={action:'state',state:'type'};
+    data['sdata']=obj.attr('sdata');
+    data['type']=obj.val();
+    quiUpdate(data,obj);
+    return false;
+})
+$('.rankUpdate').change(function(){
+    var obj=$(this),data={action:'state',state:'rank'};
+    data['sdata']=obj.attr('sdata');
+    data['rank']=obj.val();
+    quiUpdate(data,obj);
+    return false;
+})
+function menuShow(json,pid,n,cls){
+    var nr=true;
+    $.each(json,function(k,v){
+	   if(v.pid==pid){
+		  tr='<td class="menu_name"><span class="bg"></span><label><input class="check_list" type="checkbox" value="'+v.uway+'">'+v.name+'</label></td>';
+		  tr+='<td><input type="text" value="'+v.rank+'" class="inp tc rankUpdate" sdata="'+v.uway+'" maxlength="11"></td>';
+		  if(n>1){tr+='<td>'+selectVal+'</td>';}else{tr+='<td>'+((v.type>0)?'独立首页':'默认首页')+'</td>';}
+		  tr+='<td>'+v.url+'</td>';
+		  tr+='<td><a href="javascript:" sdata="'+v.chk_t+'" class="state_'+v.chk+' stateClick" addClass="state_'+v.chk+'"></a>';
+		  if(n==1){tr+='<a href="javascript:" sdata="'+v.dchk_t+'" class="state_'+v.dchk+' stateClick" addClass="state_'+v.dchk+'"></a></td>';}else{tr+='</td>';}
+		  if(v.away){tr+='<td><a href="<{$url}>&way=update&sdata='+v.away+'">[添加]</a></td>';}else{tr+='<td><span class="cGray">[限制]</span></td>';}
+		  tr+='<td><a href="<{$url}>&way=update&sdata='+v.uway+'">[修改]</a>[<a href="javascript:" sdata="'+v.uway+'" class="cRed delClick" title="删除"></a>]</td>';
+		  $('.menu tbody').append('<tr class="menuTr menu_'+n+(cls?(' c'+cls):'')+'">'+tr+'</tr>');
+		  var pleft=(n-1)*20;
+		  $('.menu tbody .menu_'+n+' .menu_name').css({paddingLeft:(pleft>0?pleft:5)})
+		  if(n>1)$('.menu tbody tr .selectType').last().attr('sdata',v.uway).val(v.type)
+		  if(v.data){
+			 var c=n+1;
+			 var ncls=cls?cls:parseInt(Math.random()*(1000+n)+1)
+			 $('.menu tbody tr').last().attr('cls','c'+ncls)
+			 menuShow(v.data,v.id,c,ncls);
+		  }
+	   }
+    })
+}
+</script>

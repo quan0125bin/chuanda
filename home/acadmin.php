@@ -1,0 +1,16 @@
+<?php
+header('location:/acadmin/');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
